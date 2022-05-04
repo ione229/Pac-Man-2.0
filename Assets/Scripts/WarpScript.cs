@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class WarpScript : MonoBehaviour
 {
-    public GameObject ChompMan;
+    public GameObject theOtherWarp;
     
     // Start is called before the first frame update
     void Start()
@@ -16,9 +16,11 @@ public class WarpScript : MonoBehaviour
     {
         if(other.gameObject.tag.Equals("Player"))
         {
-            ChompMan.transform.position = new Vector3(9.5f, 0.5f, 0.30f); 
+            other.gameObject.transform.position = this.theOtherWarp.transform.position; 
         }
+
     }
+   
     // Update is called once per frame
     void Update()
     {

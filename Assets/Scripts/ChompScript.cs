@@ -6,13 +6,13 @@ using UnityEngine.AI;
 public class ChompScript : MonoBehaviour
 {
     Rigidbody rb;
-    NavMeshAgent blueGhostAgent;
     TextMesh theScoreTextMesh;
+    public GameObject Enemy1;
+    private NavMeshAgent blueGhostAgent;
     
     public GameObject scoreText;
-    public float speed = 20.0f;
-    public GameObject blueGhost;
-    private int count;
+    public float speed = 2.0f;
+    
 
     private bool goForward = false;
     private bool goBackward = false;
@@ -21,32 +21,35 @@ public class ChompScript : MonoBehaviour
 
     void Awake()
     {
-        rb = this.gameObject.GetComponent<Rigidbody>();
-        blueGhostAgent = this.blueGhost.GetComponent<NavMeshAgent>();
+        blueGhostAgent = this.Enemy1.GetComponent<NavMeshAgent>();
         blueGhostAgent.speed = 2.0f;
+        rb = this.gameObject.GetComponent<Rigidbody>();
         this.theScoreTextMesh = this.scoreText.GetComponent<TextMesh>();
-        count = 0;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        blueGhostAgent.SetDestination(this.gameObject.transform.position);
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if(CORE.CountDown == 0 || CORE.CountDown == 10)
+        {
+            if(collision.gameObject.tag.Equals("Enemy"))
+            {
+                Destroy(this.gameObject);
+                blueGhostAgent = null;
+                print("YOU LOSE.");
+            }
+        }  
     }
 
     // Update is called once per frame
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag.Equals("pellet"))
-        {
-            count++;
-            this.theScoreTextMesh.text = "Score: " + count;
-        }
-    }
+    
     
     void Update()
     {
-        this.blueGhostAgent.SetDestination(this.gameObject.transform.position);
 
         if (goForward)
         {

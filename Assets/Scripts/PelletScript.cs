@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class PelletScript : MonoBehaviour
 {
-    private Rigidbody rb;
+    
     // Start is called before the first frame update
     void Start()
     {
-        rb = this.gameObject.GetComponent<Rigidbody>();
+       
+       
     }
     void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag.Equals("Player"))
         {
+            CORE.score++;
+            CORE.TimerOn = true;
             Destroy(this.gameObject);
         }
     }
